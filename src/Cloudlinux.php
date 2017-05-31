@@ -42,7 +42,7 @@ class Cloudlinux
 	public $rest_url = 'https://cln.cloudlinux.com/api/';
 	public $rest_options = [];
 	/**
-	 * @var XML_RPC2_Client
+	 * @var \XML_RPC2_Client
 	 */
 	public $xml_client;
 	public $response;
@@ -64,7 +64,7 @@ class Cloudlinux
 			$this->xml_options['prefix'] = $this->prefix;
 			$this->xml_options['encoding'] = $this->encoding;
 			$this->xml_options['sslverify'] = $this->sslverify;
-			$this->xml_client = XML_RPC2_Client::create($this->xml_url, $this->xml_options);
+			$this->xml_client = \XML_RPC2_Client::create($this->xml_url, $this->xml_options);
 		//} elseif ($this->api_type == 'rest') {
 			//$this->rest_options[CURLOPT_SSL_VERIFYHOST] = $this->sslverify;
 		//}
