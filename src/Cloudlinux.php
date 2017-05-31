@@ -12,6 +12,8 @@
  * @category Licenses
  */
 
+namespace Detain\Cloudlinux;
+
 /**
  * Cloudlinux Licensing Class
  *
