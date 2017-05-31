@@ -39,7 +39,7 @@ $cloudlinux = new Cloudlinux('API Username', 'API Password');
 ```php
 foreach ($cl->reconcile() as $license)
 	echo $license['IP'] . ' is type ' . $license['TYPE'] . '. server registered in CLN with license: ' . var_export($license['REGISTERED'], true) . "\n";
-```;
+```
 
 ## License
 
