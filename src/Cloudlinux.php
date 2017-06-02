@@ -250,9 +250,9 @@ class Cloudlinux
 		$this->log('info', "Calling CLoudLinux->xml_client->remove_license({$this->authToken()}, {$ip}, {$type})", __LINE__, __FILE__);
 		try {
 			if ($type === false)
-				return $this->response = $this->xml_client->remove_license($this->authToken(), $ip);
+				return $this->response = $this->remove($ip);
 			else
-				return $this->response = $this->xml_client->remove_license($this->authToken(), $ip, $type);
+				return $this->response = $this->remove($ip, $type);
 		} catch (Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
