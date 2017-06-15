@@ -57,17 +57,19 @@ class Cloudlinux
 		$this->login = $login;
 		$this->key = $key;
 		$this->apiType = $apiType;
+		$limitType = false;
 		if (!isset($GLOBALS['HTTP_RAW_POST_DATA']))
 			$GLOBALS['HTTP_RAW_POST_DATA'] = file_get_contents('php://input');
-		//if ($this->apiType == 'xml') {
+		if (!$limitType || $this->apiType == 'xml') {
 			include_once('XML/RPC2/Client.php');
 			$this->xmlOptions['prefix'] = $this->prefix;
 			$this->xmlOptions['encoding'] = $this->encoding;
 			$this->xmlOptions['sslverify'] = $this->sslverify;
 			$this->xmlClient = \XML_RPC2_Client::create($this->xmlUrl, $this->xmlOptions);
-		//} elseif ($this->apiType == 'rest') {
-			//$this->restOptions[CURLOPT_SSL_VERIFYHOST] = $this->sslverify;
-		//}
+		}
+		if (!$limitType || $this->apiType == 'rest') {
+			$this->restOptions[CURLOPT_SSL_VERIFYHOST] = $this->sslverify;
+		}
 	}
 
 	/**
@@ -76,7 +78,7 @@ class Cloudlinux
 	 * also it sets a mozilla type agent.
 	 * @param string $url        the url of the page you want
 	 * @param string $postfields postfields in the format of "v1=10&v2=20&v3=30"
-	 * @param string $options
+	 * @param string|array $options
 	 * @return string the webpage
 	 */
 	public function getcurlpage($url, $postfields = '', $options = '') {
@@ -243,16 +245,13 @@ class Cloudlinux
 	 * or
 	 * Remove IP licenses with specified type for customer. Also un­registers from CLN server associated with IP.
 	 * @param string         $ipAddress   ip address to remove
-	 * @param bool|false|int $type optional parameter to specify the type of license to remove (1,2, or 16)
+	 * @param int $type optional parameter to specify the type of license to remove (1,2, or 16) or 0 for all
 	 * @return false|integer 0 on success, -1 on error, Error will be returned also if account have no licenses for provided IP.
 	 */
-	public function removeLicense($ipAddress, $type = false) {
+	public function removeLicense($ipAddress, $type = 0) {
 		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
 		try {
-			if ($type === false)
-				return $this->response = $this->remove($ipAddress);
-			else
-				return $this->response = $this->remove($ipAddress, $type);
+			return $this->response = $this->remove($ipAddress, $type);
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
@@ -272,7 +271,7 @@ class Cloudlinux
 		if ($this->apiType == 'xml')
 			return $this->xmlIsLicensed($ipAddress, $checkAll);
 		else
-			return $this->check($ipAddress, $checkAll);
+			return $this->check($ipAddress);
 	}
 	/**
 	 * Check if IP license was registered by any customer. Arguments:
@@ -323,15 +322,5 @@ class Cloudlinux
 			return false;
 		}
 	}
-
-	/*
-	public function getKeyInfo($Key) {
-	$this->response = $this->xml->__call('partner10.getKeyInfo', array(
-	$this->AuthInfo(),
-	$Key,
-	));
-	return $this->response;
-	}
-	*/
 }
 
