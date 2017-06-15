@@ -16,6 +16,7 @@ php:
 cache:
   directories:
     - $HOME/.composer/cache/files
+    - tmp/pear/download/
 
 addons:
   code_climate:
@@ -30,7 +31,4 @@ before_script:
  
 script: 
   - vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --debug --coverage-clover build/logs/clover.xml
-  - set
-  - ls tmp/pear/download/
-  - ls /tmp/pear/download/
-  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then vendor/bin/test-reporter --exit-code $TRAVIS_TEST_RESULT; fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then vendor/bin/test-reporter --exit-code $TRAVIS_TEST_RESULT; fi
