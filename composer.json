@@ -22,7 +22,8 @@
     "require-dev": {
         "phpunit/phpunit": "*",
         "vlucas/phpdotenv": "*",
-        "codeclimate/php-test-reporter": "dev-master"
+        "codeclimate/php-test-reporter": "dev-master",
+        "satooshi/php-coveralls": "*"
     },
     "autoload": {
         "psr-4": {"Detain\\Cloudlinux\\": "src/"}
