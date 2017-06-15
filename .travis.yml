@@ -24,7 +24,7 @@ before_script:
   - composer self-update
   - composer install --no-interaction --dev --prefer-dist
 script: 
-  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then phpdbg -qrr vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover build/logs/clover.xml; else vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover build/logs/clover.xml; fi
+  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then phpdbg -qrr vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover build/logs/clover.xml --whitelist src/; else vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v; fi
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then vendor/bin/test-reporter --coverage-report=build/logs/clover.xml; fi
 matrix:
   include:
