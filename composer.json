@@ -19,7 +19,8 @@
         "ext-curl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "vlucas/phpdotenv": "*"
     },
     "autoload": {
         "psr-4": {"Detain\\Cloudlinux\\": "src/"}
