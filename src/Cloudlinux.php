@@ -180,7 +180,7 @@ class Cloudlinux
 	 *
 	 * @param string $ipAddress ip address to remove licenses on
 	 * @param int $type optional license type. If empty or 0, will remove licenses with all types
-	 * @return bool
+	 * @return bool|int
 	 */
 	public function remove($ipAddress, $type = 0) {
 		if ($this->apiType == 'xml')
