@@ -203,7 +203,7 @@ class Cloudlinux
 	/**
 	 * automatic authToken generator
 	 *
-	 * @return string the authToken
+	 * @return false|string the authToken
 	 */
 	public function authToken() {
 		$time = time();
@@ -244,7 +244,7 @@ class Cloudlinux
 	 * Remove IP licenses with specified type for customer. Also un­registers from CLN server associated with IP.
 	 * @param string         $ipAddress   ip address to remove
 	 * @param bool|false|int $type optional parameter to specify the type of license to remove (1,2, or 16)
-	 * @return integer 0 on success, -1 on error, Error will be returned also if account have no licenses for provided IP.
+	 * @return false|integer 0 on success, -1 on error, Error will be returned also if account have no licenses for provided IP.
 	 */
 	public function removeLicense($ipAddress, $type = false) {
 		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
@@ -280,7 +280,7 @@ class Cloudlinux
 	 * @param string $ipAddress ip address to remove
 	 * @param bool $checkAll True will search for any type of license. False ­ only for types 1 or 2
 	 * @throws XmlRpcException for critical errors
-	 * @return array (list<int>): List of registered license types or empty list if no license found
+	 * @return false|array (list<int>): List of registered license types or empty list if no license found
 	 */
 	public function xmlIsLicensed($ipAddress, $checkAll = true) {
 		try {
@@ -293,7 +293,7 @@ class Cloudlinux
 	}
 
 	/**
-	 * @return bool|mixed
+	 * @return false|array
 	 */
 	public function licenseList() {
 		try {
@@ -309,7 +309,7 @@ class Cloudlinux
 	 * Return list of all IP licenses owned by authorized user
 	 *
 	 * @throws XmlRpcException for critical errors
-	 * @return array (list<structure>): List of structures or empty list. Each structure contains keys:
+	 * @return false|array (list<structure>): List of structures or empty list. Each structure contains keys:
 	 * 	IP(string)
 	 * 	TYPE(int) ­ license type
 	 * 	REGISTERED(boolean) ­ True if server was registered in CLN with this license
