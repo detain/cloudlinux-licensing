@@ -3,11 +3,12 @@
 namespace Detain\Cloudlinux\Tests;
 
 use Detain\Cloudlinux\Cloudlinux;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Cloudlinux Test Suite
  */
-class CloudlinuxTest extends \PHPUnit_Framework_TestCase
+class CloudlinuxTest extends TestCase
 {
 	/**
 	 * @var Cloudlinux
