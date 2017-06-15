@@ -20,7 +20,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "vlucas/phpdotenv": "*"
+        "vlucas/phpdotenv": "*",
+        "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
         "psr-4": {"Detain\\Cloudlinux\\": "src/"}
