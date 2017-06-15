@@ -12,6 +12,8 @@ php:
   - nightly
  
 before_script:
+  - pear install pear/XML_RPC2
+  - phpenv rehash
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
  
