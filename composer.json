@@ -11,6 +11,7 @@
         }
     ],
     "config": {
+        "bin-dir": "vendor/bin",
         "minimum-stability": "dev"
     },
     "require": {
