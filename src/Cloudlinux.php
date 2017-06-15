@@ -320,7 +320,7 @@ class Cloudlinux
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
-		return $this->reseponse;
+		return $this->response;
 	}
 }
 
