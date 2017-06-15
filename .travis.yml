@@ -24,10 +24,11 @@ before_script:
   - phpenv config-rm xdebug.ini
   - pear install pear/XML_RPC2
   - phpenv rehash
-  - composer self-update
-  - composer install --no-interaction --dev --prefer-dist
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --dev --prefer-dist
 script: 
-  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then phpdbg -qrr vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover build/logs/clover.xml --whitelist src/; else vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v; fi
+  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then phpdbg -qrr vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover build/logs/clover.xml --whitelist src/; else vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v; fi
 after_success:
-  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then vendor/bin/test-reporter --coverage-report=build/logs/clover.xml; fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then travis_retry vendor/bin/test-reporter --coverage-report=build/logs/clover.xml; fi
   - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then travis_retry php vendor/bin/coveralls -v --coverage_clover=build/logs/clover.xml; fi;
+  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then travis_retry php vendor/bin/codacycoverage clover build/logs/clover.xml; fi;

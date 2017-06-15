@@ -23,7 +23,8 @@
         "phpunit/phpunit": "*",
         "vlucas/phpdotenv": "*",
         "codeclimate/php-test-reporter": "dev-master",
-        "satooshi/php-coveralls": "*"
+        "satooshi/php-coveralls": "*",
+        "codacy/coverage": "dev-master"
     },
     "autoload": {
         "psr-4": {"Detain\\Cloudlinux\\": "src/"}
