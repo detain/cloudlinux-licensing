@@ -1,6 +1,6 @@
 # Cloudlinux Licensing API
-
-Class to itnerface with the Cloudlinux Licensing API to manage Cloudlinux and KernelCare License Types.  More info at https://www.cloudlinux.com/
+![Logo](https://www.cloudlinux.com/images/icons/prod_cl_logo.svg) 
+Class to interface with the Cloudlinux Licensing API to manage Cloudlinux and KernelCare License Types.  More info at https://www.cloudlinux.com/
 
 [![Latest Stable Version](https://poser.pugx.org/detain/cloudlinux-licensing/version)](https://packagist.org/packages/detain/cloudlinux-licensing)
 [![Total Downloads](https://poser.pugx.org/detain/cloudlinux-licensing/downloads)](https://packagist.org/packages/detain/cloudlinux-licensing)
