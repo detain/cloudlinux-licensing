@@ -268,9 +268,9 @@ class Cloudlinux
 	 * @throws XmlRpcException for critical errors
 	 * @return array (list<int>): List of registered license types or empty list if no license found
 	 */
-	public function is_licensed($ipAddress, $checkAll = true) {
+	public function isLicensed($ipAddress, $checkAll = true) {
 		if ($this->apiType == 'xml')
-			return $this->xml_is_licensed($ipAddress, $checkAll);
+			return $this->xmlIsLicensed($ipAddress, $checkAll);
 		else
 			return $this->check($ipAddress, $checkAll);
 	}
@@ -282,9 +282,9 @@ class Cloudlinux
 	 * @throws XmlRpcException for critical errors
 	 * @return array (list<int>): List of registered license types or empty list if no license found
 	 */
-	public function xml_is_licensed($ipAddress, $checkAll = true) {
+	public function xmlIsLicensed($ipAddress, $checkAll = true) {
 		try {
-			return $this->response = $this->xmlClient->is_licensed($this->authToken(), $ipAddress, $checkAll);
+			return $this->response = $this->xmlClient->isLicensed($this->authToken(), $ipAddress, $checkAll);
 		} catch (Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
@@ -295,7 +295,7 @@ class Cloudlinux
 	/**
 	 * @return bool|mixed
 	 */
-	public function license_list() {
+	public function licenseList() {
 		try {
 			return json_decode($this->getcurlpage($this->restUrl.'ipl/list.json?token=' . $this->authToken()));
 		} catch (Exception $e) {

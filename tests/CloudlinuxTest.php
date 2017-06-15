@@ -173,7 +173,7 @@ class CloudlinuxTest extends TestCase
 	}
 
 	/**
-	 * @covers Detain\Cloudlinux\Cloudlinux::is_licensed
+	 * @covers Detain\Cloudlinux\Cloudlinux::isLicensed
 	 * @todo   Implement testIs_licensed().
 	 */
 	public function testIs_licensed()
@@ -185,10 +185,10 @@ class CloudlinuxTest extends TestCase
 	}
 
 	/**
-	 * @covers Detain\Cloudlinux\Cloudlinux::xml_is_licensed
-	 * @todo   Implement testXml_is_licensed().
+	 * @covers Detain\Cloudlinux\Cloudlinux::xmlIsLicensed
+	 * @todo   Implement testXml_isLicensed().
 	 */
-	public function testXml_is_licensed()
+	public function testXml_isLicensed()
 	{
 		// Remove the following lines when you implement this test.
 		$this->markTestIncomplete(
@@ -197,7 +197,7 @@ class CloudlinuxTest extends TestCase
 	}
 
 	/**
-	 * @covers Detain\Cloudlinux\Cloudlinux::license_list
+	 * @covers Detain\Cloudlinux\Cloudlinux::licenseList
 	 * @todo   Implement testLicense_list().
 	 */
 	public function testLicense_list()
