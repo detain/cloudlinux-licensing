@@ -3,13 +3,17 @@ os: linux
 dist: trusty
 sudo: false
 php:
+  - 5.3
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
+  - 7.1
   - hhvm
+  - nightly
  
 before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
  
-script: vendor/phpunit/phpunit/phpunit --debug -v --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php
+script: vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php
