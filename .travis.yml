@@ -10,4 +10,4 @@ before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
  
-script: vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php
+script: vendor/phpunit/phpunit/phpunit --debug -v --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php
