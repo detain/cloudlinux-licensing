@@ -127,6 +127,15 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::xmlIsLicensed
 	 */
+	public function testXml_isLicensedException()
+	{
+		$object = new Cloudlinux(getenv('CLOUDLINUX_LOGIN'), 'BAD_KEY');
+		$this->assertFalse($object->xmlIsLicensed('66.45.228.100'));
+	}
+
+	/**
+	 * @covers Detain\Cloudlinux\Cloudlinux::xmlIsLicensed
+	 */
 	public function testXml_isLicensedNoLicense()
 	{
 		$response = $this->object->xmlIsLicensed('66.45.228.100');

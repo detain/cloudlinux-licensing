@@ -85,8 +85,6 @@ class Cloudlinux
 	 * gets a webpage via curl and returns the response.
 	 * also it sets a mozilla type agent.
 	 * @param string $url        the url of the page you want
-	 * @param string $postfields postfields in the format of "v1=10&v2=20&v3=30"
-	 * @param string|array $options
 	 * @return string the webpage
 	 */
 	public function getcurlpage($url) {
