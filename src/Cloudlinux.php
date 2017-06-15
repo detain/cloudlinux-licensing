@@ -56,7 +56,7 @@ class Cloudlinux
 	public function __construct($login, $key, $apiType = 'rest') {
 		$this->login = $login;
 		$this->key = $key;
-		$this->apiType = $apiType
+		$this->apiType = $apiType;
 		if (!isset($GLOBALS['HTTP_RAW_POST_DATA']))
 			$GLOBALS['HTTP_RAW_POST_DATA'] = file_get_contents('php://input');
 		//if ($this->apiType == 'xml') {
