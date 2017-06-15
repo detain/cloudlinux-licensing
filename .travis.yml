@@ -2,9 +2,6 @@ env:
   global:
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: php
-os: linux
-dist: trusty
-sudo: false
 php:
   - 5.4
   - 5.5
@@ -12,24 +9,27 @@ php:
   - 7.0
   - 7.1
   - nightly
-
 cache:
   directories:
     - $HOME/.composer/cache/files
     - tmp/pear/download/
-
 addons:
   code_climate:
     repo_token: $CODECLIMATE_REPO_TOKEN
- 
 before_script:
+  - mkdir -p build/logs
   - phpenv config-rm xdebug.ini
   - pear install pear/XML_RPC2
   - phpenv rehash
   - composer self-update
   - composer install --no-interaction --dev --prefer-dist
- 
 script: 
-  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then phpdbg -qrr vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover clover.xml; fi
-  - if [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover clover.xml; fi
-  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then vendor/bin/test-reporter --coverage-report=clover.xml; fi
+  - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then phpdbg -qrr vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover build/logs/clover.xml; else vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover build/logs/clover.xml; fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then vendor/bin/test-reporter --coverage-report=build/logs/clover.xml; fi
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: false
+    - os: osx
+      osx_image: xcode7.2
