@@ -29,10 +29,3 @@ before_script:
 script: 
   - if [ "$TRAVIS_PHP_VERSION" = "7.0" ]; then phpdbg -qrr vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --coverage-clover build/logs/clover.xml --whitelist src/; else vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v; fi
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then vendor/bin/test-reporter --coverage-report=build/logs/clover.xml; fi
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: false
-    - os: osx
-      osx_image: xcode7.2
