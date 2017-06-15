@@ -82,7 +82,6 @@ class Cloudlinux
 	 * @return string the webpage
 	 */
 	public function getcurlpage($url, $postfields = '', $options = '') {
-		//myadmin_log('myadmin', 'info', "Get Url Page $url", __LINE__, __FILE__);
 		$agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2790.0 Safari/537.36';
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -228,9 +227,10 @@ class Cloudlinux
 	 */
 	public function license($ipAddress, $type) {
 		$type = (int)$type;
+		$xmlClient = $this->xmlClient;
 		try {
 			$this->log('error', 'Calling License(' . $this->authToken() . ',' . $ipAddress . ',' . $type . ')');
-			$this->response = $this->xmlClient->license($this->authToken(), $ipAddress, $type);
+			$this->response = $xmlClient->license($this->authToken(), $ipAddress, $type);
 			$this->log('error', 'Response: ' . var_export($this->response, true));
 			return $this->response;
 		} catch (\Exception $e) {
@@ -246,7 +246,7 @@ class Cloudlinux
 	 * Remove IP licenses with specified type for customer. Also un­registers from CLN server associated with IP.
 	 * @param string         $ipAddress   ip address to remove
 	 * @param int $type optional parameter to specify the type of license to remove (1,2, or 16) or 0 for all
-	 * @return false|integer 0 on success, -1 on error, Error will be returned also if account have no licenses for provided IP.
+	 * @return bool|int 0 on success, -1 on error, Error will be returned also if account have no licenses for provided IP.
 	 */
 	public function removeLicense($ipAddress, $type = 0) {
 		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
@@ -265,7 +265,7 @@ class Cloudlinux
 	 * @param string $ipAddress ip address to remove
 	 * @param bool $checkAll True will search for any type of license. False ­ only for types 1 or 2
 	 * @throws XmlRpcException for critical errors
-	 * @return array (list<int>): List of registered license types or empty list if no license found
+	 * @return false|array (list<int>): List of registered license types or empty list if no license found
 	 */
 	public function isLicensed($ipAddress, $checkAll = true) {
 		if ($this->apiType == 'xml')
@@ -276,14 +276,15 @@ class Cloudlinux
 	/**
 	 * Check if IP license was registered by any customer. Arguments:
 	 *
+	 * @throws XmlRpcException for critical errors
 	 * @param string $ipAddress ip address to remove
 	 * @param bool $checkAll True will search for any type of license. False ­ only for types 1 or 2
-	 * @throws XmlRpcException for critical errors
 	 * @return false|array (list<int>): List of registered license types or empty list if no license found
 	 */
 	public function xmlIsLicensed($ipAddress, $checkAll = true) {
+		$xmlClient = $this->xmlClient;
 		try {
-			return $this->response = $this->xmlClient->isLicensed($this->authToken(), $ipAddress, $checkAll);
+			return $this->response = $xmlClient->isLicensed($this->authToken(), $ipAddress, $checkAll);
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
@@ -308,14 +309,12 @@ class Cloudlinux
 	 * Return list of all IP licenses owned by authorized user
 	 *
 	 * @throws XmlRpcException for critical errors
-	 * @return false|array (list<structure>): List of structures or empty list. Each structure contains keys:
-	 * 	IP(string)
-	 * 	TYPE(int) ­ license type
-	 * 	REGISTERED(boolean) ­ True if server was registered in CLN with this license
+	 * @return false|array (list<structure>): List of structures or empty list. Each structure contains keys:  IP(string)   TYPE(int) ­ license type  REGISTERED(boolean) ­ True if server was registered in CLN with this license
 	 */
 	public function reconcile() {
+		$xmlClient = $this->xmlClient;
 		try {
-			return $this->response = $this->xmlClient->reconcile($this->authToken());
+			return $this->response = $xmlClient->reconcile($this->authToken());
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
