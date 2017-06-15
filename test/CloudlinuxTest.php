@@ -1,6 +1,6 @@
 <?php
 
-namespace Detain\Cloudlinux\Tests
+namespace Detain\Cloudlinux\Tests;
 
 use Detain\Cloudlinux\Cloudlinux;
 
