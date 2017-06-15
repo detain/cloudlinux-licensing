@@ -32,7 +32,6 @@ class Cloudlinux
 {
 	private $login = '';
 	private $key = '';
-	private $authToken;
 	public $prefix = 'registration.';
 	public $encoding = 'utf-8'; // utf-8 / UTF-8
 	public $apiType = 'rest';
@@ -52,14 +51,15 @@ class Cloudlinux
 	 *
 	 * @param string $login API Login Name
 	 * @param string $key API Key
-	 * @param string $type API type to use, can be 'rest' or 'xml'
+	 * @param string $apiType API type to use, can be 'rest' or 'xml'
 	 */
-	public function __construct($login, $key, $type = 'rest') {
+	public function __construct($login, $key, $apiType = 'rest') {
 		$this->login = $login;
 		$this->key = $key;
+		$this->apiType = $apiType
 		if (!isset($GLOBALS['HTTP_RAW_POST_DATA']))
 			$GLOBALS['HTTP_RAW_POST_DATA'] = file_get_contents('php://input');
-		//if ($apiType == 'xml') {
+		//if ($this->apiType == 'xml') {
 			include_once('XML/RPC2/Client.php');
 			$this->xmlOptions['prefix'] = $this->prefix;
 			$this->xmlOptions['encoding'] = $this->encoding;
@@ -196,7 +196,7 @@ class Cloudlinux
 	 * @return array an array of licenses each one containing these fields: ip(string)   ype(int) ­ license type (1,2,16)   registered(boolean) ­ true if server was registered in CLN with this license (CLN licenses only).    created(string) ­ license creation time
 	 */
 	public function restList() {
-		$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token='.$this->authToken(), '', $this->restOptions);
+		$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token='.$this->uthToken(), '', $this->restOptions);
 		return json_decode($this->response, true);
 	}
 
