@@ -101,7 +101,7 @@ class CloudlinuxTest extends TestCase
 	}
 
 	/**
-	 * @covers Detain\Cloudlinux\Cloudlinux::rest_remove
+	 * @covers Detain\Cloudlinux\Cloudlinux::restRemove
 	 * @todo   Implement testRest_remove().
 	 */
 	public function testRest_remove()
@@ -125,7 +125,7 @@ class CloudlinuxTest extends TestCase
 	}
 
 	/**
-	 * @covers Detain\Cloudlinux\Cloudlinux::rest_list
+	 * @covers Detain\Cloudlinux\Cloudlinux::restList
 	 * @todo   Implement testRest_list().
 	 */
 	public function testRest_list()
@@ -161,7 +161,7 @@ class CloudlinuxTest extends TestCase
 	}
 
 	/**
-	 * @covers Detain\Cloudlinux\Cloudlinux::remove_license
+	 * @covers Detain\Cloudlinux\Cloudlinux::removeLicense
 	 * @todo   Implement testRemove_license().
 	 */
 	public function testRemove_license()

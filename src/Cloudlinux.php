@@ -168,7 +168,7 @@ class Cloudlinux
 	 * @param int $type optional license type. If empty, will remove licenses with all types
 	 * @return bool
 	 */
-	public function rest_remove($ipAddress, $type = 0) {
+	public function restRemove($ipAddress, $type = 0) {
 		if ($type != 0)
 			$this->response = $this->getcurlpage($this->restUrl.'ipl/remove.json?ip='.$ipAddress.'&type='.$type.'&token='.$this->authToken(), '', $this->restOptions);
 		else
@@ -185,9 +185,9 @@ class Cloudlinux
 	 */
 	public function remove($ipAddress, $type = 0) {
 		if ($this->apiType == 'xml')
-			return $this->remove_license($ipAddress, $type);
+			return $this->removeLicense($ipAddress, $type);
 		else
-			return $this->rest_remove($ipAddress, $type);
+			return $this->restRemove($ipAddress, $type);
 	}
 
 	/**
@@ -195,7 +195,7 @@ class Cloudlinux
 	 *
 	 * @return array an array of licenses each one containing these fields: ip(string)   ype(int) ­ license type (1,2,16)   registered(boolean) ­ true if server was registered in CLN with this license (CLN licenses only).    created(string) ­ license creation time
 	 */
-	public function rest_list() {
+	public function restList() {
 		$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token='.$this->authToken(), '', $this->restOptions);
 		return json_decode($this->response, true);
 	}
@@ -246,8 +246,8 @@ class Cloudlinux
 	 * @param bool|false|int $type optional parameter to specify the type of license to remove (1,2, or 16)
 	 * @return integer 0 on success, -1 on error, Error will be returned also if account have no licenses for provided IP.
 	 */
-	public function remove_license($ipAddress, $type = false) {
-		$this->log('info', "Calling CLoudLinux->xmlClient->remove_license({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
+	public function removeLicense($ipAddress, $type = false) {
+		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
 		try {
 			if ($type === false)
 				return $this->response = $this->remove($ipAddress);
