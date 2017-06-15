@@ -12,6 +12,7 @@ Class to itnerface with the Cloudlinux Licensing API to manage Cloudlinux and Ke
 [![Build Status](https://travis-ci.org/detain/cloudlinux-licensing.svg?branch=master)](https://travis-ci.org/detain/cloudlinux-licensing)
 [![Code Climate](https://codeclimate.com/github/detain/cloudlinux-licensing/badges/gpa.svg)](https://codeclimate.com/github/detain/cloudlinux-licensing)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/226251fc068f4fd5b4b4ef9a40011d06)](https://www.codacy.com/app/detain/cloudlinux-licensing)
 
 ## Installation
