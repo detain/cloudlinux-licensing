@@ -58,8 +58,6 @@ class Cloudlinux
 		$this->key = $key;
 		$this->apiType = $apiType;
 		$limitType = false;
-		if (!isset($GLOBALS['HTTP_RAW_POST_DATA']))
-			$GLOBALS['HTTP_RAW_POST_DATA'] = file_get_contents('php://input');
 		if (!$limitType || $this->apiType == 'xml') {
 			include_once('XML/RPC2/Client.php');
 			$this->xmlOptions['prefix'] = $this->prefix;
@@ -251,12 +249,13 @@ class Cloudlinux
 	public function removeLicense($ipAddress, $type = 0) {
 		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
 		try {
-			return $this->response = $this->remove($ipAddress, $type);
+			$this->response = $this->remove($ipAddress, $type);
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
+		return $this->response;
 	}
 
 	/**
@@ -284,12 +283,13 @@ class Cloudlinux
 	public function xmlIsLicensed($ipAddress, $checkAll = true) {
 		$xmlClient = $this->xmlClient;
 		try {
-			return $this->response = $xmlClient->isLicensed($this->authToken(), $ipAddress, $checkAll);
+			$this->response = $xmlClient->isLicensed($this->authToken(), $ipAddress, $checkAll);
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
+		return $this->response;
 	}
 
 	/**
@@ -314,12 +314,13 @@ class Cloudlinux
 	public function reconcile() {
 		$xmlClient = $this->xmlClient;
 		try {
-			return $this->response = $xmlClient->reconcile($this->authToken());
+			$this->response = $xmlClient->reconcile($this->authToken());
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
+		return $this->reseponse;
 	}
 }
 
