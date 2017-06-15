@@ -7,15 +7,14 @@ Class to interface with the Cloudlinux Licensing API to manage Cloudlinux and Ke
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/226251fc068f4fd5b4b4ef9a40011d06)](https://www.codacy.com/app/detain/cloudlinux-licensing)
+[![Reference Status](https://www.versioneye.com/php/detain:cloudlinux-licensing/reference_badge.svg?style=flat)](https://www.versioneye.com/php/detain:cloudlinux-licensing/references)
 
 [![Latest Stable Version](https://poser.pugx.org/detain/cloudlinux-licensing/version)](https://packagist.org/packages/detain/cloudlinux-licensing)
 [![Total Downloads](https://poser.pugx.org/detain/cloudlinux-licensing/downloads)](https://packagist.org/packages/detain/cloudlinux-licensing)
 [![Latest Unstable Version](https://poser.pugx.org/detain/cloudlinux-licensing/v/unstable)](//packagist.org/packages/detain/cloudlinux-licensing)
-[![License](https://poser.pugx.org/detain/cloudlinux-licensing/license)](https://packagist.org/packages/detain/cloudlinux-licensing)
 [![Monthly Downloads](https://poser.pugx.org/detain/cloudlinux-licensing/d/monthly)](https://packagist.org/packages/detain/cloudlinux-licensing)
 [![Daily Downloads](https://poser.pugx.org/detain/cloudlinux-licensing/d/daily)](https://packagist.org/packages/detain/cloudlinux-licensing)
-[![Reference Status](https://www.versioneye.com/php/detain:cloudlinux-licensing/reference_badge.svg?style=flat)](https://www.versioneye.com/php/detain:cloudlinux-licensing/references)
-
+[![License](https://poser.pugx.org/detain/cloudlinux-licensing/license)](https://packagist.org/packages/detain/cloudlinux-licensing)
 
 ## Installation
 
