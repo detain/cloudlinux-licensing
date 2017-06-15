@@ -13,6 +13,10 @@ php:
   - 7.1
   - nightly
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
 addons:
   code_climate:
     repo_token: $CODECLIMATE_REPO_TOKEN
@@ -22,9 +26,11 @@ before_script:
   - pear install pear/XML_RPC2
   - phpenv rehash
   - composer self-update
-  - composer install --prefer-source --no-interaction --dev
+  - composer install --no-interaction --dev --prefer-dist
  
 script: 
   - vendor/phpunit/phpunit/phpunit --bootstrap tests/bootstrap.php tests/CloudlinuxTest.php -v --debug --coverage-clover build/logs/clover.xml
   - set
+  - ls tmp/pear/download/
+  - ls /tmp/pear/download/
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then vendor/bin/test-reporter --exit-code $TRAVIS_TEST_RESULT; fi
