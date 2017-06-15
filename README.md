@@ -7,6 +7,7 @@ Class to interface with the Cloudlinux Licensing API to manage Cloudlinux and Ke
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/detain/cloudlinux-licensing/?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/226251fc068f4fd5b4b4ef9a40011d06)](https://www.codacy.com/app/detain/cloudlinux-licensing)
+
 [![Latest Stable Version](https://poser.pugx.org/detain/cloudlinux-licensing/version)](https://packagist.org/packages/detain/cloudlinux-licensing)
 [![Total Downloads](https://poser.pugx.org/detain/cloudlinux-licensing/downloads)](https://packagist.org/packages/detain/cloudlinux-licensing)
 [![Latest Unstable Version](https://poser.pugx.org/detain/cloudlinux-licensing/v/unstable)](//packagist.org/packages/detain/cloudlinux-licensing)
