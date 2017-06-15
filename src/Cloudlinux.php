@@ -58,14 +58,14 @@ class Cloudlinux
 		$this->key = $key;
 		$this->apiType = $apiType;
 		$limitType = false;
-		if (!$limitType || $this->apiType == 'xml') {
+		if ($limitType === false || $this->apiType == 'xml') {
 			include_once('XML/RPC2/Client.php');
 			$this->xmlOptions['prefix'] = $this->prefix;
 			$this->xmlOptions['encoding'] = $this->encoding;
 			$this->xmlOptions['sslverify'] = $this->sslverify;
 			$this->xmlClient = \XML_RPC2_Client::create($this->xmlUrl, $this->xmlOptions);
 		}
-		if (!$limitType || $this->apiType == 'rest') {
+		if ($limitType === false || $this->apiType == 'rest') {
 			$this->restOptions[CURLOPT_SSL_VERIFYHOST] = $this->sslverify;
 		}
 	}
@@ -77,13 +77,7 @@ class Cloudlinux
 	 */
 	public function authToken() {
 		$time = time();
-		try {
-			return $this->login . '|' . $time . '|' . sha1($this->key . $time);
-		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: ' . $e->getCode());
-			$this->log('error', 'Caught exception message: ' . $e->getMessage());
-			return false;
-		}
+		return $this->login . '|' . $time . '|' . sha1($this->key . $time);
 	}
 
 	/**
@@ -95,31 +89,18 @@ class Cloudlinux
 	 * @param string|array $options
 	 * @return string the webpage
 	 */
-	public function getcurlpage($url, $postfields = '', $options = '') {
+	public function getcurlpage($url) {
 		$agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2790.0 Safari/537.36';
 		$curl = curl_init($url);
+		$options = $this->restOptions;
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_USERAGENT, $agent);
-		if (is_array($postfields) || $postfields != '') {
-			if (is_array($postfields)) {
-				$postdata = [];
-				foreach ($postfields as $field => $value) {
-					$postdata[] = $field . '=' . urlencode($value);
-				}
-				curl_setopt($curl, CURLOPT_POSTFIELDS, implode('&', $postdata));
-			} else {
-				curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
-			}
-		}
-		if (is_array($options) && sizeof($options) > 0) {
-			foreach ($options as $key => $value) {
+		if (is_array($options) && sizeof($options) > 0)
+			foreach ($options as $key => $value)
 				curl_setopt($curl, $key, $value);
-			}
-		}
-		$tmp = curl_exec($curl);
+		$return = curl_exec($curl);
 		curl_close($curl);
-		$ret = $tmp;
-		return $ret;
+		return $return;
 	}
 
 	public function log($level, $text, $line = '', $file = '') {
@@ -135,7 +116,7 @@ class Cloudlinux
 	 * @return array array of system information
 	 */
 	public function status() {
-		$this->response = $this->getcurlpage($this->restUrl.'status.json', '', $this->restOptions);
+		$this->response = $this->getcurlpage($this->restUrl.'status.json');
 		return json_decode($this->response, true);
 	}
 
@@ -145,7 +126,7 @@ class Cloudlinux
 	 * @return array returns an array with  available(int[]) ­ list of types that can be used to register new IP license, and owned(int[]) ­ list of types that already registered(owned) by this account
 	 */
 	public function availability($ipAddress) {
-		$this->response = $this->getcurlpage($this->restUrl.'ipl/availability.json?ip='.$ipAddress.'&token='.$this->authToken(), '', $this->restOptions);
+		$this->response = $this->getcurlpage($this->restUrl.'ipl/availability.json?ip='.$ipAddress.'&token='.$this->authToken());
 		return json_decode($this->response, true);
 	}
 
@@ -156,7 +137,7 @@ class Cloudlinux
 	 * @return false|array Will return list of registered license types or empty list if provided IP is not registered yet.
 	 */
 	public function check($ipAddress) {
-		$this->response = $this->getcurlpage($this->restUrl.'ipl/check.json?ip='.$ipAddress.'&token='.$this->authToken(), '', $this->restOptions);
+		$this->response = $this->getcurlpage($this->restUrl.'ipl/check.json?ip='.$ipAddress.'&token='.$this->authToken());
 		$response = json_decode($this->response, true);
 		if ($response['success'] == 1)
 			return $response['data'];
@@ -206,7 +187,7 @@ class Cloudlinux
 	 * @return array On success response returns information about created or already registered license.   ip(string)    type(int) ­ license type (1,2,16)   registered(boolean) ­ true if server was registered in CLN with this license (CLN licenses only).     created(string) ­ license creation time
 	 */
 	public function register($ipAddress, $type) {
-		$this->response = $this->getcurlpage($this->restUrl.'ipl/register.json?ip='.$ipAddress.'&type='.$type.'&token='.$this->authToken(), '', $this->restOptions);
+		$this->response = $this->getcurlpage($this->restUrl.'ipl/register.json?ip='.$ipAddress.'&type='.$type.'&token='.$this->authToken());
 		return json_decode($this->response, true);
 	}
 
@@ -219,9 +200,9 @@ class Cloudlinux
 	 */
 	public function restRemove($ipAddress, $type = 0) {
 		if ($type != 0)
-			$this->response = $this->getcurlpage($this->restUrl.'ipl/remove.json?ip='.$ipAddress.'&type='.$type.'&token='.$this->authToken(), '', $this->restOptions);
+			$this->response = $this->getcurlpage($this->restUrl.'ipl/remove.json?ip='.$ipAddress.'&type='.$type.'&token='.$this->authToken());
 		else
-			$this->response = $this->getcurlpage($this->restUrl.'ipl/remove.json?ip='.$ipAddress.'&token='.$this->authToken(), '', $this->restOptions);
+			$this->response = $this->getcurlpage($this->restUrl.'ipl/remove.json?ip='.$ipAddress.'&token='.$this->authToken());
 		return json_decode($this->response, true);
 	}
 
@@ -283,22 +264,13 @@ class Cloudlinux
 	 */
 	public function restList() {
 		try {
-			$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token=' . $this->authToken(), '', $this->restOptions);
+			$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token=' . $this->authToken());
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
 		return json_decode($this->response, true);
-	}
-
-	/**
-	 * alias function to get a list of licenses
-	 *
-	 * @return false|array
-	 */
-	public function licenseList() {
-		return $this->restList();
 	}
 
 	/**
@@ -317,6 +289,18 @@ class Cloudlinux
 			return false;
 		}
 		return $this->response;
+	}
+
+	/**
+	 * alias function to get a list of licenses
+	 *
+	 * @return false|array
+	 */
+	public function licenseList() {
+		if ($this->apiType == 'rest')
+			return $this->restList();
+		else
+			return $this->reconcile();
 	}
 
 	/**

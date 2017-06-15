@@ -138,7 +138,7 @@ class CloudlinuxTest extends TestCase
 	{
 		$response = $this->object->xmlIsLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
-		$this->assertEquals(1, $response[0], 'This should return an array with a 1.');
+		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
 	}
 
 	/**
@@ -156,19 +156,23 @@ class CloudlinuxTest extends TestCase
 	 */
 	public function isLicensed($ipAddress)
 	{
+		$this->object->apiType = 'xml';
 		$response = $this->object->isLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
-		$this->assertEquals(1, $response[0], 'This should return an array with a 1.');
+		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
+		$this->object->apiType = 'rest';
+		$response = $this->object->isLicensed($ipAddress);
+		$this->assertTrue(is_array($response));
+		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
 	}
 
-	public function ListResponse($response) {
+	public function ListRestResponse($response) {
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
 		$this->assertEquals(true, $response['success'], 'The command wasnt successfull and should  have been.');
 		$this->assertArrayHasKey('data', $response, 'Missing data in response');
 		$entry = $response['data'][0];
 		$this->assertTrue(is_array($entry), 'Missing array of license data');
-		$response = $this->object->availability('1.1.1.1.1');
 		$this->assertArrayHasKey('created', $entry, 'Missing creation date field');
 		$this->assertArrayHasKey('ip', $entry, 'Missing IP field');
 		$this->assertArrayHasKey('registered', $entry, 'Missing registered status field');
@@ -177,8 +181,21 @@ class CloudlinuxTest extends TestCase
 		$this->assertTrue(is_int($entry['type']), 'Type should be an integer');
 		$this->assertTrue($this->valid_ip($entry['ip']), 'ip should be a valid ip address');
 		$this->Check($entry['ip']);
-		$this->Xml_isLicensed($entry['ip']);
 		$this->isLicensed($entry['ip']);
+	}
+
+	public function ListXmlResponse($response) {
+		$this->assertTrue(is_array($response));
+		$entry = $response[0];
+		$this->assertTrue(is_array($entry), 'Missing array of license data');
+		$this->assertArrayHasKey('IP', $entry, 'Missing IP field');
+		$this->assertArrayHasKey('REGISTERED', $entry, 'Missing registered status field');
+		$this->assertArrayHasKey('TYPE', $entry, 'Missing type field');
+		$this->assertTrue(is_bool($entry['REGISTERED']), 'registered should be a boolean');
+		$this->assertTrue(is_int($entry['TYPE']), 'Type should be an integer');
+		$this->assertTrue($this->valid_ip($entry['IP']), 'ip should be a valid ip address');
+		$this->Xml_isLicensed($entry['IP']);
+		$this->isLicensed($entry['IP']);
 	}
 
 	/**
@@ -204,7 +221,16 @@ class CloudlinuxTest extends TestCase
 		 * 			],
 		 */
 		$response = $this->object->restList();
-		$this->ListResponse($response);
+		$this->ListRestResponse($response);
+	}
+
+	/**
+	 * @covers Detain\Cloudlinux\Cloudlinux::reconcile
+	 */
+	public function testReconcile()
+	{
+		$response = $this->object->reconcile();
+		$this->ListXmlResponse($response);
 	}
 
 	/**
@@ -212,8 +238,24 @@ class CloudlinuxTest extends TestCase
 	 */
 	public function testLicense_list()
 	{
+		$this->object->apiType = 'xml';
+		$response = $this->object->reconcile();
+		$this->ListXmlResponse($response);
+		$this->object->apiType = 'rest';
 		$response = $this->object->licenseList();
-		$this->ListResponse($response);
+		$this->ListRestResponse($response);
+	}
+
+	/**
+	 * @covers Detain\Cloudlinux\Cloudlinux::license
+	 * @todo   Implement testLicense().
+	 */
+	public function testLicense()
+	{
+		// Remove the following lines when you implement this test.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
 	}
 
 	/**
@@ -253,18 +295,6 @@ class CloudlinuxTest extends TestCase
 	}
 
 	/**
-	 * @covers Detain\Cloudlinux\Cloudlinux::license
-	 * @todo   Implement testLicense().
-	 */
-	public function testLicense()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
-
-	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::removeLicense
 	 * @todo   Implement testRemove_license().
 	 */
@@ -276,15 +306,4 @@ class CloudlinuxTest extends TestCase
 		);
 	}
 
-	/**
-	 * @covers Detain\Cloudlinux\Cloudlinux::reconcile
-	 * @todo   Implement testReconcile().
-	 */
-	public function testReconcile()
-	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-	}
 }
