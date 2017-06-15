@@ -15,9 +15,9 @@ class CloudlinuxTest extends TestCase
 	 */
 	protected $object;
 
-	protected function valid_ip($ip) {
-		if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false)
-			if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
+	protected function valid_ip($ipAddress) {
+		if(filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false)
+			if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
 				return false;
 		return true;
 	}
@@ -116,10 +116,10 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::check
 	 */
-	public function Check($ip)
+	public function Check($ipAddress)
 	{
 		// ["success" => true, "data" => ["available" => [16, 41, 42, 43, 49], "owned" => [1] ] ]
-		$response = $this->object->check($ip);
+		$response = $this->object->check($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertEquals(1, $response[0], 'This should return an array with a 1.');
 	}
@@ -134,9 +134,9 @@ class CloudlinuxTest extends TestCase
 		$this->assertEquals(0, count($response), 'This should return a blank array.');
 	}
 
-	public function Xml_isLicensed($ip)
+	public function Xml_isLicensed($ipAddress)
 	{
-		$response = $this->object->xmlIsLicensed($ip);
+		$response = $this->object->xmlIsLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertEquals(1, $response[0], 'This should return an array with a 1.');
 	}
@@ -154,9 +154,9 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::isLicensed
 	 */
-	public function isLicensed($ip)
+	public function isLicensed($ipAddress)
 	{
-		$response = $this->object->isLicensed($ip);
+		$response = $this->object->isLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertEquals(1, $response[0], 'This should return an array with a 1.');
 	}
