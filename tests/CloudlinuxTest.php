@@ -1,7 +1,5 @@
 <?php
 
-namespace Detain\Cloudlinux\Tests;
-
 use Detain\Cloudlinux\Cloudlinux;
 use PHPUnit\Framework\TestCase;
 
@@ -14,13 +12,7 @@ class CloudlinuxTest extends TestCase
 	 * @var Cloudlinux
 	 */
 	protected $object;
-
-	protected function valid_ip($ipAddress) {
-		if(filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false)
-			if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
-				return false;
-		return true;
-	}
+	protected $generator;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -33,6 +25,14 @@ class CloudlinuxTest extends TestCase
 			$dotenv->load();
 		}
 		$this->object = new Cloudlinux(getenv('CLOUDLINUX_LOGIN'), getenv('CLOUDLINUX_KEY'));
+		$this->generator = new PHPUnit_Framework_MockObject_Generator;
+	}
+
+	protected function valid_ip($ipAddress) {
+		if(filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false)
+			if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
+				return false;
+		return true;
 	}
 
 	/**
@@ -257,62 +257,55 @@ class CloudlinuxTest extends TestCase
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::license
-	 * @todo   Implement testLicense().
 	 */
 	public function testLicense()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$response = $this->object->license('66.45.228.100', 17);
+		$this->assertFalse($response);
 	}
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::register
-	 * @todo   Implement testRegister().
 	 */
 	public function testRegister()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$response = $this->object->register('66.45.228.100', 17);
+		$this->assertTrue(is_array($response));
+		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
+		$this->assertEquals(false, $response['success'], 'This should return false as its an invalid license type.');
 	}
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::restRemove
-	 * @todo   Implement testRest_remove().
 	 */
 	public function testRest_remove()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$response = $this->object->restRemove('66.45.228.100');
+		$this->assertTrue(is_array($response));
+		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
+		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
 	}
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::remove
-	 * @todo   Implement testRemove().
 	 */
 	public function testRemove()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$response = $this->object->remove('66.45.228.100');
+		$this->assertTrue(is_array($response));
+		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
+		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
 	}
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::removeLicense
-	 * @todo   Implement testRemove_license().
 	 */
 	public function testRemove_license()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$response = $this->object->removeLicense('66.45.228.100');
+		$this->assertTrue(is_array($response));
+		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
+		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
 	}
 
 }
