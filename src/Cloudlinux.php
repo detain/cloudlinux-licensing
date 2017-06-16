@@ -105,8 +105,6 @@ class Cloudlinux
 	public function log($level, $text, $line = '', $file = '') {
 		if (function_exists('myadmin_log'))
 			myadmin_log('cloudlinux', $level, $text, $line, $file);
-		else
-			error_log($text);
 	}
 
 	/**
@@ -169,13 +167,12 @@ class Cloudlinux
 	public function xmlIsLicensed($ipAddress, $checkAll = true) {
 		$xmlClient = $this->xmlClient;
 		try {
-			$this->response = $xmlClient->is_licensed($this->authToken(), $ipAddress, $checkAll);
+			return $this->response = $xmlClient->is_licensed($this->authToken(), $ipAddress, $checkAll);
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
-		return $this->response;
 	}
 
 	/**
@@ -230,13 +227,12 @@ class Cloudlinux
 	public function removeLicense($ipAddress, $type = 0) {
 		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
 		try {
-			$this->response = $this->xmlClient->remove_license($this->authToken(), $ipAddress, $type);
+			return $this->response = $this->xmlClient->remove_license($this->authToken(), $ipAddress, $type);
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
-		return $this->response;
 	}
 
 	/**
