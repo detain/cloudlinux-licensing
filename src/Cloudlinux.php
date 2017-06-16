@@ -228,13 +228,7 @@ class Cloudlinux
 	 */
 	public function removeLicense($ipAddress, $type = 0) {
 		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
-		try {
-			$this->response = $this->remove($ipAddress, $type);
-		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: ' . $e->getCode());
-			$this->log('error', 'Caught exception message: ' . $e->getMessage());
-			return false;
-		}
+		$this->response = $this->remove($ipAddress, $type);
 		return $this->response;
 	}
 
@@ -261,13 +255,7 @@ class Cloudlinux
 	 * @return false|array an array of licenses each one containing these fields: ip(string)   ype(int) ­ license type (1,2,16)   registered(boolean) ­ true if server was registered in CLN with this license (CLN licenses only).    created(string) ­ license creation time
 	 */
 	public function restList() {
-		try {
-			$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token=' . $this->authToken());
-		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: ' . $e->getCode());
-			$this->log('error', 'Caught exception message: ' . $e->getMessage());
-			return false;
-		}
+		$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token=' . $this->authToken());
 		return json_decode($this->response, true);
 	}
 
@@ -278,14 +266,7 @@ class Cloudlinux
 	 * @return false|array (list<structure>): List of structures or empty list. Each structure contains keys:  IP(string)   TYPE(int) ­ license type  REGISTERED(boolean) ­ True if server was registered in CLN with this license
 	 */
 	public function reconcile() {
-		$xmlClient = $this->xmlClient;
-		try {
-			$this->response = $xmlClient->reconcile($this->authToken());
-		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: ' . $e->getCode());
-			$this->log('error', 'Caught exception message: ' . $e->getMessage());
-			return false;
-		}
+		$this->response = $this->xmlClient->reconcile($this->authToken());
 		return $this->response;
 	}
 
@@ -315,13 +296,12 @@ class Cloudlinux
 		try {
 			$this->log('error', 'Calling License(' . $this->authToken() . ',' . $ipAddress . ',' . $type . ')');
 			$this->response = $xmlClient->license($this->authToken(), $ipAddress, $type);
-			$this->log('error', 'Response: ' . var_export($this->response, true));
-			return $this->response;
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
+		return $this->response;
 	}
 }
 

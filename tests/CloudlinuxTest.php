@@ -82,7 +82,7 @@ class CloudlinuxTest extends TestCase
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
 		$this->assertEquals(1, $response['success'], 'The command wasnt successfull and should  have been.');
 		$this->assertArrayHasKey('data', $response, 'Missing data in response');
-		$this->assertEquals($response['data']['ip_server_reg'], 1, 'IP Server is not up');
+		$this->assertArrayHasKey('ip_server_reg', $response['data'], 'IP Server status missing');
 	}
 
 	/**
@@ -165,11 +165,10 @@ class CloudlinuxTest extends TestCase
 	 */
 	public function isLicensed($ipAddress)
 	{
-		$this->object->apiType = 'xml';
-		$response = $this->object->isLicensed($ipAddress);
+		$object = new Cloudlinux(getenv('CLOUDLINUX_LOGIN'), getenv('CLOUDLINUX_KEY'), 'xml');
+		$response = $object->isLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
-		$this->object->apiType = 'rest';
 		$response = $this->object->isLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
@@ -248,7 +247,7 @@ class CloudlinuxTest extends TestCase
 	public function testLicense_list()
 	{
 		$this->object->apiType = 'xml';
-		$response = $this->object->reconcile();
+		$response = $this->object->licenseList();
 		$this->ListXmlResponse($response);
 		$this->object->apiType = 'rest';
 		$response = $this->object->licenseList();
@@ -306,6 +305,14 @@ class CloudlinuxTest extends TestCase
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
 		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
+		$response = $this->object->removeLicense('66.45.228.100', 3);
+		$this->assertTrue(is_array($response));
+		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
+		$this->assertEquals(false, $response['success'], 'This shoudl return true.');
+		$response = $this->object->removeLicense('66.45.228.100.1');
+		$this->assertTrue(is_array($response));
+		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
+		$this->assertEquals(false, $response['success'], 'This shoudl return false.');
 	}
 
 }
