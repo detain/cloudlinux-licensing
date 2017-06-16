@@ -28,8 +28,7 @@ namespace Detain\Cloudlinux;
  *
  * @access public
  */
-class Cloudlinux
-{
+class Cloudlinux {
 	private $login = '';
 	private $key = '';
 	public $prefix = 'registration.';
@@ -78,7 +77,7 @@ class Cloudlinux
 	 */
 	public function authToken() {
 		$time = time();
-		return $this->login . '|' . $time . '|' . sha1($this->key . $time);
+		return $this->login.'|'.$time.'|'.sha1($this->key.$time);
 	}
 
 	/**
@@ -169,8 +168,8 @@ class Cloudlinux
 		try {
 			return $this->response = $xmlClient->is_licensed($this->authToken(), $ipAddress, $checkAll);
 		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: ' . $e->getCode());
-			$this->log('error', 'Caught exception message: ' . $e->getMessage());
+			$this->log('error', 'Caught exception code: '.$e->getCode());
+			$this->log('error', 'Caught exception message: '.$e->getMessage());
 			return false;
 		}
 	}
@@ -229,8 +228,8 @@ class Cloudlinux
 		try {
 			return $this->response = $this->xmlClient->remove_license($this->authToken(), $ipAddress, $type);
 		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: ' . $e->getCode());
-			$this->log('error', 'Caught exception message: ' . $e->getMessage());
+			$this->log('error', 'Caught exception code: '.$e->getCode());
+			$this->log('error', 'Caught exception message: '.$e->getMessage());
 			return false;
 		}
 	}
@@ -258,7 +257,7 @@ class Cloudlinux
 	 * @return false|array an array of licenses each one containing these fields: ip(string)   ype(int) ­ license type (1,2,16)   registered(boolean) ­ true if server was registered in CLN with this license (CLN licenses only).    created(string) ­ license creation time
 	 */
 	public function restList() {
-		$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token=' . $this->authToken());
+		$this->response = $this->getcurlpage($this->restUrl.'ipl/list.json?token='.$this->authToken());
 		return json_decode($this->response, true);
 	}
 
@@ -294,14 +293,14 @@ class Cloudlinux
 	 * @return false|integer 0 on success, -1 on error
 	 */
 	public function license($ipAddress, $type) {
-		$type = (int)$type;
+		$type = (int) $type;
 		$xmlClient = $this->xmlClient;
 		try {
-			$this->log('error', 'Calling License(' . $this->authToken() . ',' . $ipAddress . ',' . $type . ')');
+			$this->log('error', 'Calling License('.$this->authToken().','.$ipAddress.','.$type.')');
 			return $this->response = $xmlClient->license($this->authToken(), $ipAddress, $type);
 		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: ' . $e->getCode());
-			$this->log('error', 'Caught exception message: ' . $e->getMessage());
+			$this->log('error', 'Caught exception code: '.$e->getCode());
+			$this->log('error', 'Caught exception message: '.$e->getMessage());
 			return false;
 		}
 	}
