@@ -3,9 +3,9 @@
 use Detain\Cloudlinux\Cloudlinux;
 use PHPUnit\Framework\TestCase;
 
-function myadmin_log($section, $level, $text, $line = '', $file = '', $tf = true) {
+function myadmin_log($section, $level, $text, $line = '', $file = '') {
 	$GLOBALS['myadmin_log'] = $section.' '.$level.' '.$text.' '.$line.' '.$file;
-	//echo $section.' '.$level.' '.$text.' '.$line.' '.$file.PHP_EOL;
+	echo $section.' '.$level.' '.$text.' '.$line.' '.$file.PHP_EOL;
 }
 
 /**
