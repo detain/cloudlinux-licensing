@@ -40,6 +40,7 @@ class Cloudlinux
 	public $xmlUrl = 'https://cln.cloudlinux.com/clweb/xmlrpc';
 	public $restUrl = 'https://cln.cloudlinux.com/api/';
 	public $restOptions = [];
+
 	/**
 	 * @var \XML_RPC2_Client
 	 */
@@ -228,7 +229,13 @@ class Cloudlinux
 	 */
 	public function removeLicense($ipAddress, $type = 0) {
 		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
-		$this->response = $this->remove($ipAddress, $type);
+		try {
+			$this->response = $this->xmlClient->remove_license($this->authToken(), $ipAddress, $type);
+		} catch (\Exception $e) {
+			$this->log('error', 'Caught exception code: ' . $e->getCode());
+			$this->log('error', 'Caught exception message: ' . $e->getMessage());
+			return false;
+		}
 		return $this->response;
 	}
 
@@ -295,13 +302,12 @@ class Cloudlinux
 		$xmlClient = $this->xmlClient;
 		try {
 			$this->log('error', 'Calling License(' . $this->authToken() . ',' . $ipAddress . ',' . $type . ')');
-			$this->response = $xmlClient->license($this->authToken(), $ipAddress, $type);
+			return $this->response = $xmlClient->license($this->authToken(), $ipAddress, $type);
 		} catch (\Exception $e) {
 			$this->log('error', 'Caught exception code: ' . $e->getCode());
 			$this->log('error', 'Caught exception message: ' . $e->getMessage());
 			return false;
 		}
-		return $this->response;
 	}
 }
 

@@ -3,11 +3,15 @@
 use Detain\Cloudlinux\Cloudlinux;
 use PHPUnit\Framework\TestCase;
 
+function myadmin_log($section, $level, $text, $line = '', $file = '', $tf = true) {
+	$GLOBALS['myadmin_log'] = $section.' '.$level.' '.$text.' '.$line.' '.$file;
+	//echo $section.' '.$level.' '.$text.' '.$line.' '.$file.PHP_EOL;
+}
+
 /**
  * Cloudlinux Test Suite
  */
-class CloudlinuxTest extends TestCase
-{
+class CloudlinuxTest extends TestCase {
 	/**
 	 * @var Cloudlinux
 	 */
@@ -18,8 +22,7 @@ class CloudlinuxTest extends TestCase
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp()
-	{
+	protected function setUp() {
 		if (file_exists(__DIR__.'/.env')) {
 			$dotenv = new Dotenv\Dotenv(__DIR__);
 			$dotenv->load();
@@ -39,8 +42,7 @@ class CloudlinuxTest extends TestCase
 	 * Tears down the fixture, for example, closes a network connection.
 	 * This method is called after a test is executed.
 	 */
-	protected function tearDown()
-	{
+	protected function tearDown() {
 	}
 
 	public function testTestEnvironment() {
@@ -52,16 +54,25 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::getcurlpage
 	 */
-	public function testGetcurlpage()
-	{
+	public function testGetcurlpage() {
 		$this->assertRegExp('/<html/i', $this->object->getcurlpage('https://cln.cloudlinux.com'));
+	}
+
+	/**
+	 * @covers Detain\Cloudlinux\Cloudlinux::log
+	 */
+	public function testLog() {
+		if (!isset($GLOBALS['myadmin_log']))
+			$GLOBALS['myadmin_log'] = '';
+		$orig = $GLOBALS['myadmin_log'];
+		$this->object->log('debug', 'log message');
+		$this->assertNotEquals($orig, $GLOBALS['myadmin_log']);
 	}
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::authToken
 	 */
-	public function testAuthToken()
-	{
+	public function testAuthToken() {
 		$response = $this->object->authToken();
 		$this->assertTrue(is_string($response), 'Token should be a string');
 		$this->assertTrue(strpos($response, '|') !== false, 'Token should be split by pipes');
@@ -73,8 +84,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::status
 	 */
-	public function testStatus()
-	{
+	public function testStatus() {
 		//Array( [success] => 1  [data] => Array([db_rhn_online] => 1  [db_clweb_connected] => 1   [db_clweb_online] => 1  [ip_server_reg] => 1  [xmlrpc] => 1  [rhn_overloaded] =>   [db_rhn_connected] => 1  ) )
 		// Remove the following lines when you implement this test.
 		$response = $this->object->status();
@@ -88,8 +98,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::availability
 	 */
-	public function testAvailability()
-	{
+	public function testAvailability() {
 		// [ "success" => true, "data" => [ "available" => [ 1, 2, 41, 42, 43, 49, ], "owned" => [], ], ]
 		$response = $this->object->availability('127.0.0.1');
 		$this->assertTrue(is_array($response));
@@ -105,19 +114,19 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::check
 	 */
-	public function testCheckNoLicense()
-	{
+	public function testCheckNoLicense() {
 		// []
 		$response = $this->object->check('66.45.228.100');
 		$this->assertTrue(is_array($response));
 		$this->assertEquals(0, count($response), 'This should return a blank array.');
+		$response = $this->object->check('66.45.228.100.1');
+		$this->assertFalse($response);
 	}
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::check
 	 */
-	public function Check($ipAddress)
-	{
+	public function Check($ipAddress) {
 		// ["success" => true, "data" => ["available" => [16, 41, 42, 43, 49], "owned" => [1] ] ]
 		$response = $this->object->check($ipAddress);
 		$this->assertTrue(is_array($response));
@@ -127,8 +136,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::xmlIsLicensed
 	 */
-	public function testXml_isLicensedException()
-	{
+	public function testXml_isLicensedException() {
 		$object = new Cloudlinux(getenv('CLOUDLINUX_LOGIN'), 'BAD_KEY');
 		$this->assertFalse($object->xmlIsLicensed('66.45.228.100'));
 	}
@@ -136,15 +144,13 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::xmlIsLicensed
 	 */
-	public function testXml_isLicensedNoLicense()
-	{
+	public function testXml_isLicensedNoLicense() {
 		$response = $this->object->xmlIsLicensed('66.45.228.100');
 		$this->assertTrue(is_array($response));
 		$this->assertEquals(0, count($response), 'This should return a blank array.');
 	}
 
-	public function Xml_isLicensed($ipAddress)
-	{
+	public function Xml_isLicensed($ipAddress) {
 		$response = $this->object->xmlIsLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
@@ -153,8 +159,12 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::isLicensed
 	 */
-	public function testIs_licensedNoLicense()
-	{
+	public function testIs_licensedNoLicense() {
+		$this->object->apiType = 'xml';
+		$response = $this->object->isLicensed('66.45.228.100');
+		$this->assertTrue(is_array($response));
+		$this->assertEquals(0, count($response), 'This should return an empty array.');
+		$this->object->apiType = 'rest';
 		$response = $this->object->isLicensed('66.45.228.100');
 		$this->assertTrue(is_array($response));
 		$this->assertEquals(0, count($response), 'This should return an empty array.');
@@ -163,8 +173,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::isLicensed
 	 */
-	public function isLicensed($ipAddress)
-	{
+	public function isLicensed($ipAddress) {
 		$object = new Cloudlinux(getenv('CLOUDLINUX_LOGIN'), getenv('CLOUDLINUX_KEY'), 'xml');
 		$response = $object->isLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
@@ -209,8 +218,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::restList
 	 */
-	public function testRest_list()
-	{
+	public function testRest_list() {
 		/**
 		 * The normal response will look something like:
 		 * 	[
@@ -235,8 +243,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::reconcile
 	 */
-	public function testReconcile()
-	{
+	public function testReconcile() {
 		$response = $this->object->reconcile();
 		$this->ListXmlResponse($response);
 	}
@@ -244,8 +251,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::licenseList
 	 */
-	public function testLicense_list()
-	{
+	public function testLicense_list() {
 		$this->object->apiType = 'xml';
 		$response = $this->object->licenseList();
 		$this->ListXmlResponse($response);
@@ -257,8 +263,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::license
 	 */
-	public function testLicense()
-	{
+	public function testLicense() {
 		$response = $this->object->license('66.45.228.100', 17);
 		$this->assertFalse($response);
 	}
@@ -266,8 +271,7 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::register
 	 */
-	public function testRegister()
-	{
+	public function testRegister() {
 		$response = $this->object->register('66.45.228.100', 17);
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
@@ -277,9 +281,12 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::restRemove
 	 */
-	public function testRest_remove()
-	{
+	public function testRest_remove() {
 		$response = $this->object->restRemove('66.45.228.100');
+		$this->assertTrue(is_array($response));
+		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
+		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
+		$response = $this->object->restRemove('66.45.228.100', 1);
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
 		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
@@ -288,8 +295,11 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::remove
 	 */
-	public function testRemove()
-	{
+	public function testRemove() {
+		$this->object->apiType = 'xml';
+		$response = $this->object->remove('66.45.228.100');
+		$this->assertFalse($response);
+		$this->object->apiType = 'rest';
 		$response = $this->object->remove('66.45.228.100');
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
@@ -299,20 +309,13 @@ class CloudlinuxTest extends TestCase
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::removeLicense
 	 */
-	public function testRemove_license()
-	{
+	public function testRemove_license() {
 		$response = $this->object->removeLicense('66.45.228.100');
-		$this->assertTrue(is_array($response));
-		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
-		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
+		$this->assertFalse($response);
 		$response = $this->object->removeLicense('66.45.228.100', 3);
-		$this->assertTrue(is_array($response));
-		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
-		$this->assertEquals(false, $response['success'], 'This shoudl return true.');
+		$this->assertFalse($response);
 		$response = $this->object->removeLicense('66.45.228.100.1');
-		$this->assertTrue(is_array($response));
-		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
-		$this->assertEquals(false, $response['success'], 'This shoudl return false.');
+		$this->assertFalse($response);
 	}
 
 }
