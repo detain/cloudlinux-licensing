@@ -218,23 +218,6 @@ class CloudlinuxTest extends TestCase {
 	 * @covers Detain\Cloudlinux\Cloudlinux::restList
 	 */
 	public function testRest_list() {
-		/**
-		 * The normal response will look something like:
-		 * 	[
-		 * 		'success': true,
-		 * 		'data': [
-		 * 			[
-		 * 				'created': '2017-05-05T16:19-0400',
-		 * 				'ip': '66.45.240.186',
-		 * 				'registered': true,
-		 * 				'type': 1
-		 * 			], [
-		 * 				'created': '2016-10-14T10:42-0400',
-		 * 				'ip': '131.153.38.228',
-		 * 				'registered': false,
-		 * 				'type': 1
-		 * 			],
-		 */
 		$response = $this->object->restList();
 		$this->ListRestResponse($response);
 	}
