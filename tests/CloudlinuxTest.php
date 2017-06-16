@@ -5,7 +5,6 @@ use PHPUnit\Framework\TestCase;
 
 function myadmin_log($section, $level, $text, $line = '', $file = '') {
 	$GLOBALS['myadmin_log'] = $section.' '.$level.' '.$text.' '.$line.' '.$file;
-	echo $section.' '.$level.' '.$text.' '.$line.' '.$file.PHP_EOL;
 }
 
 /**
