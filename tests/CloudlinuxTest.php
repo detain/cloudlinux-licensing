@@ -30,7 +30,7 @@ class CloudlinuxTest extends TestCase {
 		$this->generator = new PHPUnit_Framework_MockObject_Generator;
 	}
 
-	protected function valid_ip($ipAddress) {
+	protected function validIp($ipAddress) {
 		if(filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
 			if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === FALSE)
 				return FALSE;
@@ -195,7 +195,7 @@ class CloudlinuxTest extends TestCase {
 		$this->assertArrayHasKey('type', $entry, 'Missing type field');
 		$this->assertTrue(is_bool($entry['registered']), 'registered should be a boolean');
 		$this->assertTrue(is_int($entry['type']), 'Type should be an integer');
-		$this->assertTrue($this->valid_ip($entry['ip']), 'ip should be a valid ip address');
+		$this->assertTrue($this->validIp($entry['ip']), 'ip should be a valid ip address');
 		$this->Check($entry['ip']);
 		$this->isLicensed($entry['ip']);
 	}
@@ -209,7 +209,7 @@ class CloudlinuxTest extends TestCase {
 		$this->assertArrayHasKey('TYPE', $entry, 'Missing type field');
 		$this->assertTrue(is_bool($entry['REGISTERED']), 'registered should be a boolean');
 		$this->assertTrue(is_int($entry['TYPE']), 'Type should be an integer');
-		$this->assertTrue($this->valid_ip($entry['IP']), 'ip should be a valid ip address');
+		$this->assertTrue($this->validIp($entry['IP']), 'ip should be a valid ip address');
 		$this->Xml_isLicensed($entry['IP']);
 		$this->isLicensed($entry['IP']);
 	}
