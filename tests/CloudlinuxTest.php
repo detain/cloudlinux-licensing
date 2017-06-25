@@ -31,10 +31,10 @@ class CloudlinuxTest extends TestCase {
 	}
 
 	protected function valid_ip($ipAddress) {
-		if(filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false)
-			if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false)
-				return false;
-		return true;
+		if(filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
+			if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === FALSE)
+				return FALSE;
+		return TRUE;
 	}
 
 	/**
@@ -74,7 +74,7 @@ class CloudlinuxTest extends TestCase {
 	public function testAuthToken() {
 		$response = $this->object->authToken();
 		$this->assertTrue(is_string($response), 'Token should be a string');
-		$this->assertTrue(strpos($response, '|') !== false, 'Token should be split by pipes');
+		$this->assertTrue(strpos($response, '|') !== FALSE, 'Token should be split by pipes');
 		sleep(1);
 		$response2 = $this->object->authToken();
 		$this->assertNotEquals($response, $response2, 'Tokens should change as time passes on');
@@ -98,7 +98,7 @@ class CloudlinuxTest extends TestCase {
 	 * @covers Detain\Cloudlinux\Cloudlinux::availability
 	 */
 	public function testAvailability() {
-		// [ "success" => true, "data" => [ "available" => [ 1, 2, 41, 42, 43, 49, ], "owned" => [], ], ]
+		// [ "success" => TRUE, "data" => [ "available" => [ 1, 2, 41, 42, 43, 49, ], "owned" => [], ], ]
 		$response = $this->object->availability('127.0.0.1');
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
@@ -107,7 +107,7 @@ class CloudlinuxTest extends TestCase {
 		$this->assertTrue(is_array($response['data']['available']), 'Missing array of available license types');
 		$response = $this->object->availability('1.1.1.1.1');
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
-		$this->assertEquals(false, $response['success'], 'This should return success of false due to invalid ip.');
+		$this->assertEquals(false, $response['success'], 'This should return success of FALSE due to invalid ip.');
 	}
 
 	/**
@@ -126,7 +126,7 @@ class CloudlinuxTest extends TestCase {
 	 * @covers Detain\Cloudlinux\Cloudlinux::check
 	 */
 	public function Check($ipAddress) {
-		// ["success" => true, "data" => ["available" => [16, 41, 42, 43, 49], "owned" => [1] ] ]
+		// ["success" => TRUE, "data" => ["available" => [16, 41, 42, 43, 49], "owned" => [1] ] ]
 		$response = $this->object->check($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertEquals(1, $response[0], 'This should return an array with a 1.');
@@ -257,7 +257,7 @@ class CloudlinuxTest extends TestCase {
 		$response = $this->object->register('66.45.228.100', 17);
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
-		$this->assertEquals(false, $response['success'], 'This should return false as its an invalid license type.');
+		$this->assertEquals(false, $response['success'], 'This should return FALSE as its an invalid license type.');
 	}
 
 	/**
@@ -267,11 +267,11 @@ class CloudlinuxTest extends TestCase {
 		$response = $this->object->restRemove('66.45.228.100');
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
-		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
+		$this->assertEquals(true, $response['success'], 'This shoudl return TRUE.');
 		$response = $this->object->restRemove('66.45.228.100', 1);
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
-		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
+		$this->assertEquals(true, $response['success'], 'This shoudl return TRUE.');
 	}
 
 	/**
@@ -285,7 +285,7 @@ class CloudlinuxTest extends TestCase {
 		$response = $this->object->remove('66.45.228.100');
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
-		$this->assertEquals(true, $response['success'], 'This shoudl return true.');
+		$this->assertEquals(true, $response['success'], 'This shoudl return TRUE.');
 	}
 
 	/**
