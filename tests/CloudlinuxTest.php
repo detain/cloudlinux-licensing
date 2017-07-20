@@ -3,6 +3,13 @@
 use Detain\Cloudlinux\Cloudlinux;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @param        $section
+ * @param        $level
+ * @param        $text
+ * @param string $line
+ * @param string $file
+ */
 function myadmin_log($section, $level, $text, $line = '', $file = '') {
 	$GLOBALS['myadmin_log'] = $section.' '.$level.' '.$text.' '.$line.' '.$file;
 }
@@ -30,6 +37,10 @@ class CloudlinuxTest extends TestCase {
 		$this->generator = new PHPUnit_Framework_MockObject_Generator;
 	}
 
+	/**
+	 * @param $ipAddress
+	 * @return bool
+	 */
 	protected function validIp($ipAddress) {
 		if(filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === FALSE)
 			if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === FALSE)
@@ -124,6 +135,7 @@ class CloudlinuxTest extends TestCase {
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::check
+	 * @param $ipAddress
 	 */
 	public function Check($ipAddress) {
 		// ["success" => TRUE, "data" => ["available" => [16, 41, 42, 43, 49], "owned" => [1] ] ]
@@ -149,6 +161,10 @@ class CloudlinuxTest extends TestCase {
 		$this->assertEquals(0, count($response), 'This should return a blank array.');
 	}
 
+	/**
+	 * @param $ipAddress
+	 * @throws \Detain\Cloudlinux\XmlRpcException
+	 */
 	public function Xml_isLicensed($ipAddress) {
 		$response = $this->object->xmlIsLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
@@ -171,6 +187,8 @@ class CloudlinuxTest extends TestCase {
 
 	/**
 	 * @covers Detain\Cloudlinux\Cloudlinux::isLicensed
+	 * @param $ipAddress
+	 * @throws \Detain\Cloudlinux\XmlRpcException
 	 */
 	public function isLicensed($ipAddress) {
 		$object = new Cloudlinux(getenv('CLOUDLINUX_LOGIN'), getenv('CLOUDLINUX_KEY'), 'xml');
@@ -182,6 +200,10 @@ class CloudlinuxTest extends TestCase {
 		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
 	}
 
+	/**
+	 * @param $response
+	 * @throws \Detain\Cloudlinux\XmlRpcException
+	 */
 	public function ListRestResponse($response) {
 		$this->assertTrue(is_array($response));
 		$this->assertArrayHasKey('success', $response, 'Missing success status in response');
@@ -200,6 +222,10 @@ class CloudlinuxTest extends TestCase {
 		$this->isLicensed($entry['ip']);
 	}
 
+	/**
+	 * @param $response
+	 * @throws \Detain\Cloudlinux\XmlRpcException
+	 */
 	public function ListXmlResponse($response) {
 		$this->assertTrue(is_array($response));
 		$entry = $response[0];

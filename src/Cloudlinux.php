@@ -100,6 +100,12 @@ class Cloudlinux {
 		return $return;
 	}
 
+	/**
+	 * @param        $level
+	 * @param        $text
+	 * @param string $line
+	 * @param string $file
+	 */
 	public function log($level, $text, $line = '', $file = '') {
 		if (function_exists('myadmin_log'))
 			myadmin_log('cloudlinux', $level, $text, $line, $file);
@@ -274,7 +280,8 @@ class Cloudlinux {
 	/**
 	 * alias function to get a list of licenses
 	 *
-	 * @return FALSE|array
+	 * @return array|FALSE
+	 * @throws \Detain\Cloudlinux\XmlRpcException
 	 */
 	public function licenseList() {
 		if ($this->apiType == 'rest')
