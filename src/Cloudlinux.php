@@ -58,7 +58,7 @@ class Cloudlinux {
 		$this->apiType = $apiType;
 		$limitType = FALSE;
 		if ($limitType === FALSE || $this->apiType == 'xml') {
-			include_once('XML/RPC2/Client.php');
+			include_once 'XML/RPC2/Client.php';
 			$this->xmlOptions['prefix'] = $this->prefix;
 			$this->xmlOptions['encoding'] = $this->encoding;
 			$this->xmlOptions['sslverify'] = $this->sslverify;
