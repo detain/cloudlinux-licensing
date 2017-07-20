@@ -92,7 +92,7 @@ class Cloudlinux {
 		$options = $this->restOptions;
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_USERAGENT, $agent);
-		if (is_array($options) && sizeof($options) > 0)
+		if (is_array($options) && count($options) > 0)
 			foreach ($options as $key => $value)
 				curl_setopt($curl, $key, $value);
 		$return = curl_exec($curl);
