@@ -4,9 +4,9 @@ use Detain\Cloudlinux\Cloudlinux;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @param        $section
- * @param        $level
- * @param        $text
+ * @param string $section
+ * @param string $level
+ * @param string $text
  * @param string $line
  * @param string $file
  */
