@@ -191,11 +191,11 @@ class CloudlinuxTest extends TestCase {
 	 * @throws \Detain\Cloudlinux\XmlRpcException
 	 */
 	public function isLicensed($ipAddress) {
-		$object = new Cloudlinux(getenv('CLOUDLINUX_LOGIN'), getenv('CLOUDLINUX_KEY'), 'xml');
-		$response = $object->isLicensed($ipAddress);
+		$response = $this->object->isLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
-		$response = $this->object->isLicensed($ipAddress);
+		$object = new Cloudlinux(getenv('CLOUDLINUX_LOGIN'), getenv('CLOUDLINUX_KEY'), 'xml');
+		$response = $object->isLicensed($ipAddress);
 		$this->assertTrue(is_array($response));
 		$this->assertTrue(is_int($response[0]), 'This should return an array with a 1.');
 	}
