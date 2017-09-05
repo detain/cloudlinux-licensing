@@ -171,8 +171,8 @@ class Cloudlinux {
 		try {
 			return $this->response = $xmlClient->is_licensed($this->authToken(), $ipAddress, $checkAll);
 		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: '.$e->getCode());
-			$this->log('error', 'Caught exception message: '.$e->getMessage());
+			$this->log('error', 'Caught exception code: '.$e->getCode(), __LINE__, __FILE__);
+			$this->log('error', 'Caught exception message: '.$e->getMessage(), __LINE__, __FILE__);
 			return FALSE;
 		}
 	}
@@ -231,8 +231,8 @@ class Cloudlinux {
 		try {
 			return $this->response = $this->xmlClient->remove_license($this->authToken(), $ipAddress, $type);
 		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: '.$e->getCode());
-			$this->log('error', 'Caught exception message: '.$e->getMessage());
+			$this->log('error', 'Caught exception code: '.$e->getCode(), __LINE__, __FILE__);
+			$this->log('error', 'Caught exception message: '.$e->getMessage(), __LINE__, __FILE__);
 			return FALSE;
 		}
 	}
@@ -300,11 +300,11 @@ class Cloudlinux {
 		$type = (int) $type;
 		$xmlClient = $this->xmlClient;
 		try {
-			$this->log('error', 'Calling License('.$this->authToken().','.$ipAddress.','.$type.')');
+			$this->log('error', 'Calling License('.$this->authToken().','.$ipAddress.','.$type.')', __LINE__, __FILE__);
 			return $this->response = $xmlClient->license($this->authToken(), $ipAddress, $type);
 		} catch (\Exception $e) {
-			$this->log('error', 'Caught exception code: '.$e->getCode());
-			$this->log('error', 'Caught exception message: '.$e->getMessage());
+			$this->log('error', 'Caught exception code: '.$e->getCode(), __LINE__, __FILE__);
+			$this->log('error', 'Caught exception message: '.$e->getMessage(), __LINE__, __FILE__);
 			return FALSE;
 		}
 	}
