@@ -227,7 +227,7 @@ class Cloudlinux {
 	 * @return bool|int 0 on success, -1 on error, Error will be returned also if account have no licenses for provided IP.
 	 */
 	public function removeLicense($ipAddress, $type = 0) {
-		$this->log('info', "Calling CLoudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
+		$this->log('info', "Calling CloudLinux->xmlClient->removeLicense({$this->authToken()}, {$ipAddress}, {$type})", __LINE__, __FILE__);
 		try {
 			return $this->response = $this->xmlClient->remove_license($this->authToken(), $ipAddress, $type);
 		} catch (\Exception $e) {
