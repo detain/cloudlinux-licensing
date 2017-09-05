@@ -63,9 +63,8 @@ class Cloudlinux {
 			$this->xmlOptions['sslverify'] = $this->sslverify;
 			$this->xmlClient = \XML_RPC2_Client::create($this->xmlUrl, $this->xmlOptions);
 		}
-		if ($limitType === FALSE || $this->apiType == 'rest') {
+		if ($limitType === FALSE || $this->apiType == 'rest')
 			$this->restOptions[CURLOPT_SSL_VERIFYHOST] = $this->sslverify;
-		}
 	}
 
 	/**
