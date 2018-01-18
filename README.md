@@ -41,5 +41,5 @@ foreach ($cl->reconcile() as $license)
 
 ## License
 
-Cloudlinux Licensing class is licensed under the LGPL-v2 license.
+Cloudlinux Licensing class is licensed under the LGPL-v2.1 license.
 
