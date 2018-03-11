@@ -99,7 +99,7 @@ class Cloudlinux {
 	}
 
 	/**
-	 * @param        $level
+	 * @param        string $level
 	 * @param        $text
 	 * @param string $line
 	 * @param string $file
