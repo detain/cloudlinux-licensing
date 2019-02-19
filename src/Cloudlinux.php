@@ -100,7 +100,7 @@ class Cloudlinux
 				curl_setopt($curl, $key, $value);
 			}
 		}
-        $call = basename(parse_url($curl)['path'],'.php');
+        $call = basename(parse_url($url)['path'],'.php');
         \StatisticClient::tick('CloudLinux', $call);
 		$return = curl_exec($curl);
 		curl_close($curl);
