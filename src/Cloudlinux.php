@@ -90,6 +90,7 @@ class Cloudlinux
 	 */
 	public function getcurlpage($url)
 	{
+		require_once __DIR__.'/../../../workerman/statistics/Applications/Statistics/Clients/StatisticClient.php';
 		$agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2790.0 Safari/537.36';
 		$curl = curl_init($url);
 		$options = $this->restOptions;
