@@ -101,14 +101,15 @@ class Cloudlinux
 				curl_setopt($curl, $key, $value);
 			}
 		}
-        $call = basename(parse_url($url)['path'],'.php');
-        \StatisticClient::tick('CloudLinux', $call);
+		$call = basename(parse_url($url)['path'], '.php');
+		\StatisticClient::tick('CloudLinux', $call);
 		$return = curl_exec($curl);
 		curl_close($curl);
-        if ($return === false)
-            \StatisticClient::report('CloudLinux', $call, false, 1, 'Curl Error', STATISTICS_SERVER);
-        else
-            \StatisticClient::report('CloudLinux', $call, true, 0, '', STATISTICS_SERVER);        
+		if ($return === false) {
+			\StatisticClient::report('CloudLinux', $call, false, 1, 'Curl Error', STATISTICS_SERVER);
+		} else {
+			\StatisticClient::report('CloudLinux', $call, true, 0, '', STATISTICS_SERVER);
+		}
 		return $return;
 	}
 
