@@ -326,7 +326,7 @@ class Cloudlinux
 	 * Will register IP based license for authorized user.
 	 *
 	 * @param string $ipAddress ip address to registger
-	 * @param int $type IP license type (1,2 or 16)
+	 * @param int $type IP license type (1,16,40,41,42,43,49)
 	 * @return bool|array true/false with normal response otherwise returns response
 	 */
 	public function register($ipAddress, $type)
