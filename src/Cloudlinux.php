@@ -38,7 +38,7 @@ class Cloudlinux
 	public $xmlUrl = 'https://cln.cloudlinux.com/clweb/xmlrpc';
 	public $restUrl = 'https://cln.cloudlinux.com/api/';
 	public $restOptions = [];
-
+    
 	/**
 	 * @var \XML_RPC2_Client
 	 */
@@ -364,4 +364,74 @@ class Cloudlinux
 			return $this->response;
 		}
 	}
+    
+    /**
+    * returns a list of Imunify Product Codes
+    * 
+    * @return array the product codes in code => description assoc array
+    */
+    public function imunifyCodes() {
+        return [
+            'AVP' => 'ImunifyAV+',
+            '360_1' => 'Imunify360 single user',
+            '360_30' => 'Imunify360 up to 30 users',
+            '360_250' => 'Imunify360 up to 250 users',
+            '360_UN' => 'Imunify360 unlimited',        
+        ];
+    }
+
+    /**
+    * Create Imunify key.
+    * 
+    * @param string $code imunify product code
+    * @param int $limit max servers per key, 0 for unlimited
+    * @param string $note optional key note
+    * @return array
+    */
+    public function imunifyCreate($code, $limit = 1, $note = false)
+    {
+        $this->response = $this->getcurlpage($this->restUrl.'im/key/create.json?token='.$this->authToken().'&code='.$code.'&limit='.$limit.($note !== false ? '&note='.$note: ''));
+        $return = json_decode($this->response, true);
+        return $return;
+    }    
+
+    /**
+    * Update Imunify key.
+    * 
+    * @param string $key imunify key to update
+    * @param int $limit max servers per key, 0 for unlimited
+    * @param string $note optional key note
+    * @return array
+    */
+    public function imunifyUpdate($key, $limit = false, $note = false)
+    {
+        $this->response = $this->getcurlpage($this->restUrl.'im/key/update.json?token='.$this->authToken().'&key='.$key.($limit !== false ? '&limit='.$limit : '').($note !== false ? '&note='.$note: ''));
+        $return = json_decode($this->response, true);
+        return $return;
+    }    
+
+    /**
+    * Remove Imunify key.
+    * 
+    * @param string $code imunify key to update
+    * @return array
+    */
+    public function imunifyRemove($key, $limit = false, $note = false)
+    {
+        $this->response = $this->getcurlpage($this->restUrl.'im/key/remove.json?token='.$this->authToken().'&key='.$key);
+        $return = json_decode($this->response, true);
+        return $return;
+    }    
+
+    /**
+    * List Imunify keys.
+    * 
+    * @return array
+    */
+    public function imunifyList()
+    {
+        $this->response = $this->getcurlpage($this->restUrl.'im/key/list.json?token='.$this->authToken());
+        $return = json_decode($this->response, true);
+        return $return;
+    }    
 }
