@@ -333,7 +333,7 @@ class Cloudlinux
     {
         $this->response = $this->getcurlpage($this->restUrl.'ipl/register.json?ip='.$ipAddress.'&type='.$type.'&token='.$this->authToken());
         $return = json_decode($this->response, true);
-        return isset($return['registered']) ? $return['registered'] : $return;
+        return $return['registered'] ?? $return;
     }
 
     /**
