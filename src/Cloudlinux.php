@@ -322,6 +322,21 @@ class Cloudlinux
         return $this->apiType == 'rest' ? $this->register($ipAddress, $type) : $this->reconcile($ipAddress, $type);
     }
 
+    public function types()
+    {
+        $this->response = $this->getcurlpage($this->restUrl.'v2/ip-license/licenses/types?&token='.$this->authToken());
+        $return = json_decode($this->response, true);
+        return $return;
+    }
+
+    public function licenses()
+    {
+        $this->response = $this->getcurlpage($this->restUrl.'v2/ip-license/licenses?&token='.$this->authToken());
+        $return = json_decode($this->response, true);
+        return $return;
+    }
+    
+
     /**
      * Will register IP based license for authorized user.
      *
@@ -432,6 +447,18 @@ class Cloudlinux
     public function imunifyList()
     {
         $this->response = $this->getcurlpage($this->restUrl.'im/key/list.json?token='.$this->authToken());
+        $return = json_decode($this->response, true);
+        return $return;
+    }
+
+    /**
+    * List KernelCare keys.
+    *
+    * @return array
+    */
+    public function kcareList()
+    {
+        $this->response = $this->getcurlpage($this->restUrl.'kcare/key/list.json?token='.$this->authToken());
         $return = json_decode($this->response, true);
         return $return;
     }
