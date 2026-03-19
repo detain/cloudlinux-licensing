@@ -90,7 +90,9 @@ class Cloudlinux
      */
     public function getcurlpage($url)
     {
-        require_once __DIR__.'/../../../workerman/statistics/Applications/Statistics/Clients/StatisticClient.php';
+        if (is_file(__DIR__.'/../../../workerman/statistics/Applications/Statistics/Clients/StatisticClient.php')) {
+            require_once __DIR__.'/../../../workerman/statistics/Applications/Statistics/Clients/StatisticClient.php';
+        }
         $agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2790.0 Safari/537.36';
         $curl = curl_init($url);
         $options = $this->restOptions;
@@ -102,13 +104,19 @@ class Cloudlinux
             }
         }
         $call = basename(parse_url($url)['path'], '.php');
-        \StatisticClient::tick('CloudLinux', $call);
+        if (class_exists(\StatisticClient::class, false)) {
+            \StatisticClient::tick('CloudLinux', $call);
+        }
         $return = curl_exec($curl);
         curl_close($curl);
         if ($return === false) {
-            \StatisticClient::report('CloudLinux', $call, false, 1, 'Curl Error', STATISTICS_SERVER);
+            if (class_exists(\StatisticClient::class, false)) {
+                \StatisticClient::report('CloudLinux', $call, false, 1, 'Curl Error', STATISTICS_SERVER);
+            }
         } else {
-            \StatisticClient::report('CloudLinux', $call, true, 0, '', STATISTICS_SERVER);
+            if (class_exists(\StatisticClient::class, false)) {
+                \StatisticClient::report('CloudLinux', $call, true, 0, '', STATISTICS_SERVER);
+            }
         }
         return $return;
     }
@@ -335,7 +343,7 @@ class Cloudlinux
         $return = json_decode($this->response, true);
         return $return;
     }
-    
+
 
     /**
      * Will register IP based license for authorized user.
