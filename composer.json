@@ -4,8 +4,23 @@
 	"description": "Cloudlinux Licensing Class",
 	"keywords": [
 		"cloudlinux",
-		"administration",
-		"license"
+		"cloudlinux-os",
+		"lve",
+		"lve-manager",
+		"license",
+		"software-license",
+		"software-licensing",
+		"license-management",
+		"licensing",
+		"api",
+		"automation",
+		"billing",
+		"linux",
+		"linux-os",
+		"reseller",
+		"subscription",
+		"whmcs",
+		"administration"
 	],
 	"license": "LGPL-2.1-only",
 	"authors": [
